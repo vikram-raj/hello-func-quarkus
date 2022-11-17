@@ -1,0 +1,35 @@
+specVersion: 0.34.0
+name: hello-func-quarkus
+runtime: quarkus
+registry: quay.io/viraj_1
+image: quay.io/viraj_1/hello-func-quarkus:latest
+imageDigest: sha256:ad632d3d4d47d4637b06b97f553fb1de821a86294854315676b5bd36e9eedb30
+created: 2022-11-16T16:16:14.058348602+05:30
+invocation:
+  format: http
+build:
+  buildpacks: []
+  builder: pack
+  buildEnvs:
+  - name: BP_NATIVE_IMAGE
+    value: "false"
+  - name: BP_MAVEN_BUILT_ARTIFACT
+    value: func.yaml target/quarkus-app/lib/ target/quarkus-app/*.jar target/quarkus-app/app/
+      target/quarkus-app/quarkus/
+  - name: BP_MAVEN_BUILD_ARGUMENTS
+    value: package -DskipTests=true -Dmaven.javadoc.skip=true -Dquarkus.package.type=fast-jar
+  - name: MAVEN_S2I_ARTIFACT_DIRS
+    value: target/quarkus-app
+  - name: S2I_SOURCE_DEPLOYMENTS_FILTER
+    value: lib quarkus-run.jar app quarkus
+run:
+  volumes: []
+  envs: []
+deploy:
+  namespace: viraj
+  annotations: {}
+  options: {}
+  labels: []
+  healthEndpoints:
+    liveness: /health/liveness
+    readiness: /health/readiness
